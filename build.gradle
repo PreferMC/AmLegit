@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.0'
+    id 'maven-publish'
+}
+
+allprojects {
+    group = 'space.commandf1.amlegit'
+    version = '1.0-SNAPSHOT'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+                from components.java
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+}
+
+build {
+    dependsOn shadowJar
+}
+
+shadowJar {
+    archiveFileName = "AmLegit.jar"
+    relocate 'com.samjakob.spigui', 'space.commandf1.amlegit.libs.spigui'
+    relocate 'com.github.mardssss.commandlib', 'space.commandf1.amlegit.libs.commandlib'
+}
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'https://repo.hpfxd.com/releases/' }
+    maven { url 'https://repo.andrei1058.dev/releases/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+    maven { url 'https://repo.codemc.io/repository/maven-snapshots/' }
+    maven { url 'https://repo.codemc.io/repository/nms/' }
+    maven { url 'https://simonsator.de/repo/' }
+    maven { url 'https://maven.citizensnpcs.co/repo' }
+    maven { url 'https://repo.alessiodp.com/releases/' }
+    maven { url 'https://repo.andrei1058.dev/releases/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.glaremasters.me/repository/concuncan/' }
+    maven { url 'https://repo.aikar.co/content/groups/aikar/'}
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    compileOnly files('../libs/bruhspigot.jar')
+    compileOnly files('../libs/PlaceholderAPI-2.11.6.jar')
+    compileOnly files('../libs/packetevents-spigot-2.8.0.jar')
+    implementation 'org.jetbrains:annotations:24.0.0'
+    implementation 'com.samjakob:SpiGUI:1.4.1'
+    // implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
+    implementation files('../libs/CommandLib-1.0.2-SNAPSHOT.jar')
+
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.36'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+}
+
+
+test {
+    useJUnitPlatform()
+}

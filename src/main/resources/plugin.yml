@@ -1,0 +1,20 @@
+name: AmLegit
+authors: [commandf1]
+main: space.commandf1.amlegit.AmLegitPlugin
+version: '${version}'
+depend:
+  - packetevents
+commands:
+  amlegit:
+    description: AmLegit Main Command
+permissions:
+  amlegit.alert:
+    default: op
+  amlegit.bypass:
+    default: op
+  amlegit.reload:
+    default: op
+  amlegit.command:
+    default: op
+  amlegit.debug:
+    default: op
