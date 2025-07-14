@@ -27,7 +27,7 @@ public class BadPacketsB extends Check implements Setbackable {
             if (event.getPacketType() == PacketType.Play.Client.WINDOW_CONFIRMATION) {
                 handler.decreaseBuffer(handler.buffer());
             } else {
-                handler.increaseBuffer(5);
+                handler.increaseBuffer(1);
             }
         } else if (handler.getEvent() instanceof PacketSendEvent) {
             handler.increaseBuffer(1);
