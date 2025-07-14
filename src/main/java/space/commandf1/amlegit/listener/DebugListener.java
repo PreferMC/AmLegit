@@ -156,12 +156,13 @@ public class DebugListener implements PacketListener {
 
             handleCalculator(sender, instance);
         } catch (Exception e) {
+            /*
             String errorDetail = "Wrapper: " + wrapperName + "\n";
             errorDetail += "Error: " + e.getClass().getName() + "\n";
             if (e.getMessage() != null) {
                 errorDetail += "Message: " + e.getMessage();
             }
-            sender.sendMessage("§c" + errorDetail);
+            sender.sendMessage("§c" + errorDetail);*/
         }
     }
 

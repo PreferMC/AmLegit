@@ -1,4 +1,4 @@
-package space.commandf1.amlegit.check;
+package space.commandf1.amlegit.check.defaults;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -12,10 +12,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import space.commandf1.amlegit.check.AlertDescription;
-import space.commandf1.amlegit.check.Check;
-import space.commandf1.amlegit.check.CheckHandler;
-import space.commandf1.amlegit.check.ReceivedPacketOnly;
+import space.commandf1.amlegit.check.defaults.AlertDescription;
+import space.commandf1.amlegit.check.defaults.Check;
+import space.commandf1.amlegit.check.defaults.CheckHandler;
+import space.commandf1.amlegit.check.defaults.ReceivedPacketOnly;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.util.BlockUtil;
@@ -118,9 +118,6 @@ public class ScaffoldA extends Check {
                         }
                         break;
                 }
-
-                /* after that, we have to check whether the block is placeable */
-
             }
         }
     }

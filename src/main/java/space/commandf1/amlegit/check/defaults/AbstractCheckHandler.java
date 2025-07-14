@@ -1,6 +1,5 @@
-package space.commandf1.amlegit.check;
+package space.commandf1.amlegit.check.defaults;
 
-import com.github.retrooper.packetevents.event.ProtocolPacketEvent;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -19,26 +18,19 @@ import space.commandf1.amlegit.util.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckHandler {
-
+@SuppressWarnings("UnusedReturnValue")
+public abstract class AbstractCheckHandler {
     @Getter
     private final PlayerData playerData;
 
     @Getter
     private final Check check;
 
-    private final ProtocolPacketEvent packetEvent;
-
     private static final Map<PlayerData, Long> buffers = new HashMap<>(), vls = new HashMap<>();
 
-    public CheckHandler(PlayerData playerData, Check check, ProtocolPacketEvent packetEvent) {
+    public AbstractCheckHandler(PlayerData playerData, Check check) {
         this.playerData = playerData;
         this.check = check;
-        this.packetEvent = packetEvent;
-    }
-
-    public final ProtocolPacketEvent getEvent() {
-        return this.packetEvent;
     }
 
     public final long increaseBuffer(long buffer) {

@@ -2,6 +2,7 @@ package space.commandf1.amlegit.check;
 
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
+import space.commandf1.amlegit.check.defaults.Check;
 
 import java.util.Arrays;
 import java.util.HashMap;

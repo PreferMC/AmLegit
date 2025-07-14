@@ -5,13 +5,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
-import space.commandf1.amlegit.check.*;
+import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
+import space.commandf1.amlegit.config.check.DefaultDisableCheck;
 import space.commandf1.amlegit.tracker.impl.PositionTracker;
 import space.commandf1.amlegit.util.BlockUtil;
 
 import java.util.List;
 
+@DefaultDisableCheck
 public class GroundSpoofA extends Check implements Setbackable {
     @CheckConfigHandler(name = "max-buffer")
     @AlertDescription(name = "MaxBuffer")
@@ -38,9 +40,9 @@ public class GroundSpoofA extends Check implements Setbackable {
         PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
         boolean onGround = tracker.isOnGround();
         boolean serverOnGround = tracker.isServerOnGround();
-        boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
+        // boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
 
-        if (onGround && !mathOnGround && !serverOnGround) {
+        if (onGround && !serverOnGround) {
             double[] offsets = {this.offset, -this.offset};
             for (double offset : offsets) {
                 Location clone = tracker.getLastLocation().clone();
@@ -81,7 +83,7 @@ public class GroundSpoofA extends Check implements Setbackable {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
-    public void handleSetback(CheckHandler handler) {
+    public void handleSetback(AbstractCheckHandler handler) {
         PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
         handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation());
     }

@@ -7,10 +7,10 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
 import lombok.SneakyThrows;
 import org.bukkit.plugin.Plugin;
-import space.commandf1.amlegit.check.AlertDescription;
-import space.commandf1.amlegit.check.Check;
-import space.commandf1.amlegit.check.CheckHandler;
-import space.commandf1.amlegit.check.ReceivedPacketOnly;
+import space.commandf1.amlegit.check.defaults.AlertDescription;
+import space.commandf1.amlegit.check.defaults.Check;
+import space.commandf1.amlegit.check.defaults.CheckHandler;
+import space.commandf1.amlegit.check.defaults.ReceivedPacketOnly;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
 
 public class BadPacketsA extends Check {

@@ -2,7 +2,7 @@ package space.commandf1.amlegit.config.check;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import space.commandf1.amlegit.check.Check;
+import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.check.CheckManager;
 import space.commandf1.amlegit.check.action.ActionHandler;
 import space.commandf1.amlegit.config.ConfigHandler;

@@ -1,4 +1,4 @@
-package space.commandf1.amlegit.check;
+package space.commandf1.amlegit.check.defaults;
 
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import lombok.EqualsAndHashCode;

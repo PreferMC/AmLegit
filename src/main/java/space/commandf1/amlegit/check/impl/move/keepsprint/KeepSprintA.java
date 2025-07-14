@@ -6,7 +6,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEn
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import space.commandf1.amlegit.check.*;
+import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.tracker.impl.PositionTracker;
@@ -73,7 +73,7 @@ public class KeepSprintA extends Check implements Setbackable {
     }
 
     @Override
-    public void handleSetback(CheckHandler handler) {
+    public void handleSetback(AbstractCheckHandler handler) {
         Player player = handler.getPlayerData().getPlayer();
         if (player == null) {
             return;

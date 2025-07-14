@@ -1,0 +1,35 @@
+package space.commandf1.amlegit.check.impl.packet.badpacket;
+
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import org.bukkit.plugin.Plugin;
+import space.commandf1.amlegit.check.defaults.AlertDescription;
+import space.commandf1.amlegit.check.defaults.Check;
+import space.commandf1.amlegit.check.defaults.CheckHandler;
+import space.commandf1.amlegit.config.check.CheckConfigHandler;
+
+public class BadPacketsB extends Check {
+
+    @CheckConfigHandler(name = "tolerance")
+    @AlertDescription(name = "Tolerance")
+    private long tolerance = 100;
+
+    public BadPacketsB(Plugin plugin) {
+        super("BadPackets", 6, "Checks for C0F disabler", "B", plugin);
+        this.addAllowedPackets(PacketType.Play.Client.WINDOW_CONFIRMATION, PacketType.Play.Server.WINDOW_CONFIRMATION);
+    }
+
+    @Override
+    public void onCheck(CheckHandler handler) {
+        if (handler.getEvent() instanceof PacketReceiveEvent) {
+            handler.decreaseBuffer(handler.buffer());
+        } else if (handler.getEvent() instanceof PacketSendEvent) {
+            handler.increaseBuffer(1);
+        }
+
+        if (handler.buffer() >= this.tolerance) {
+            handler.fail();
+        }
+    }
+}
