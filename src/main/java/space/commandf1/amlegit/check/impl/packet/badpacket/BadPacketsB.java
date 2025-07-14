@@ -16,13 +16,19 @@ public class BadPacketsB extends Check implements Setbackable {
 
     public BadPacketsB(Plugin plugin) {
         super("BadPackets", 3, "Checks for C0F disabler", "B", plugin);
-        this.addAllowedPackets(PacketType.Play.Client.WINDOW_CONFIRMATION, PacketType.Play.Server.WINDOW_CONFIRMATION);
+        this.addAllowedPackets(PacketType.Play.Client.WINDOW_CONFIRMATION, PacketType.Play.Server.WINDOW_CONFIRMATION,
+                PacketType.Play.Client.PLAYER_POSITION, PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION,
+                PacketType.Play.Client.PLAYER_ROTATION);
     }
 
     @Override
     public void onCheck(CheckHandler handler) {
-        if (handler.getEvent() instanceof PacketReceiveEvent) {
-            handler.decreaseBuffer(handler.buffer());
+        if (handler.getEvent() instanceof PacketReceiveEvent event) {
+            if (event.getPacketType() == PacketType.Play.Client.WINDOW_CONFIRMATION) {
+                handler.decreaseBuffer(handler.buffer());
+            } else {
+                handler.increaseBuffer(5);
+            }
         } else if (handler.getEvent() instanceof PacketSendEvent) {
             handler.increaseBuffer(1);
         }
