@@ -47,7 +47,7 @@ public class BadPacketsB extends Check implements Setbackable {
         }
 
         if (Math.abs(tracker.getHighestPing() - tracker.getPing()) < this.pingTolerance
-        && Math.abs(tracker.getHighestPing() - tracker.getLowestPing()) > this.maxPingDifference) {
+                && Math.abs(tracker.getHighestPing() - tracker.getLowestPing()) > this.maxPingDifference) {
             return;
         }
 
