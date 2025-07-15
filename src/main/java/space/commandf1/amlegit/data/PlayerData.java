@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.tracker.Tracker;
+import space.commandf1.amlegit.tracker.impl.NetworkTracker;
 import space.commandf1.amlegit.tracker.impl.PositionTracker;
 import space.commandf1.amlegit.util.PlayerUtil;
 
@@ -39,8 +41,8 @@ public final class PlayerData {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public static PlayerData of(Player player) {
-        return new PlayerData(player);
+    public static PlayerData of(Player player, Plugin plugin) {
+        return new PlayerData(player, plugin);
     }
 
     public int getPing() {
@@ -54,10 +56,15 @@ public final class PlayerData {
     private boolean alertEnabled = true;
 
     private void initTrackers() {
-        trackers.add(new PositionTracker(this));
+        this.trackers.add(new PositionTracker(this));
+        this.trackers.add(new NetworkTracker(this));
     }
 
-    private PlayerData(Player player) {
+    @Getter
+    private final Plugin plugin;
+
+    private PlayerData(Player player, Plugin plugin) {
+        this.plugin = plugin;
         this.player = player;
         this.initTrackers();
         data.put(player.getUniqueId(), this);

@@ -56,7 +56,7 @@ public class AmLegitPlugin extends JavaPlugin {
 
         this.checkConfig = new CheckConfig(this, this.checkManager);
         this.settingsConfig = new SettingsConfig(this);
-        this.registerBukkitListeners(new PlayerListener());
+        this.registerBukkitListeners(new PlayerListener(this));
         PacketEvents.getAPI().getEventManager().registerListener(new CheckListener(this),
                 PacketListenerPriority.HIGHEST);
 
