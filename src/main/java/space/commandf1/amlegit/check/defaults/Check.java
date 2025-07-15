@@ -85,5 +85,5 @@ public abstract class Check {
         return this.hasReceivedPacketOnly;
     }
 
-    public abstract void onCheck(CheckHandler handler);
+    public abstract void onCheck(final CheckHandler handler);
 }

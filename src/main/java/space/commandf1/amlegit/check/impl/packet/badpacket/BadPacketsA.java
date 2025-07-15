@@ -35,7 +35,7 @@ public class BadPacketsA extends Check {
     @SneakyThrows
     @Override
     @ReceivedPacketOnly
-    public void onCheck(CheckHandler handler) {
+    public void onCheck(final CheckHandler handler) {
         PacketReceiveEvent event = (PacketReceiveEvent) handler.getEvent();
         WrapperPlayClientPlayerFlying packet = null;
         if (event.getPacketType() ==  PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION) {

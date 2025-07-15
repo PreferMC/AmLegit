@@ -48,7 +48,7 @@ public class ScaffoldA extends Check {
 
     @Override
     @ReceivedPacketOnly
-    public void onCheck(CheckHandler handler) {
+    public void onCheck(final CheckHandler handler) {
         PlayerData playerData = handler.getPlayerData();
         Player player = playerData.getPlayer();
         PacketReceiveEvent event = (PacketReceiveEvent) handler.getEvent();

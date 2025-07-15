@@ -14,22 +14,30 @@ public class BadPacketsB extends Check implements Setbackable {
     @AlertDescription(name = "Tolerance")
     private long tolerance = 5;
 
+    @CheckConfigHandler(name = "increase-buffer")
+    @AlertDescription(name = "IncreaseBuffer")
+    private long increaseBuffer = 1;
+
+    @CheckConfigHandler(name = "decrease-buffer")
+    @AlertDescription(name = "DecreaseBuffer")
+    private long decreaseBuffer = 2;
+
     public BadPacketsB(Plugin plugin) {
         super("BadPackets", 3, "Checks for C0F disabler", "B", plugin);
         this.addAllowedPackets(PacketType.Play.Client.WINDOW_CONFIRMATION, PacketType.Play.Server.WINDOW_CONFIRMATION,
                 PacketType.Play.Client.PLAYER_POSITION, PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION,
-                PacketType.Play.Client.PLAYER_ROTATION);
+                PacketType.Play.Client.PLAYER_ROTATION, PacketType.Play.Client.PLAYER_FLYING);
     }
 
     @Override
-    public void onCheck(CheckHandler handler) {
+    public void onCheck(final CheckHandler handler) {
         int ping = PlayerUtil.getPing(handler.getPlayerData().getPlayer());
 
         if (handler.getEvent() instanceof PacketReceiveEvent event) {
             if (event.getPacketType() == PacketType.Play.Client.WINDOW_CONFIRMATION) {
-                handler.decreaseBuffer(2);
+                handler.decreaseBuffer(this.decreaseBuffer);
             } else {
-                handler.increaseBuffer(1);
+                handler.increaseBuffer(this.increaseBuffer);
             }
         }
 
@@ -40,7 +48,7 @@ public class BadPacketsB extends Check implements Setbackable {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
-    public void handleSetback(AbstractCheckHandler handler) {
+    public void handleSetback(final AbstractCheckHandler handler) {
         PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
         handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation());
     }

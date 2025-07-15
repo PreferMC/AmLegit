@@ -34,7 +34,7 @@ public class KeepSprintA extends Check implements Setbackable {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     @ReceivedPacketOnly
-    public void onCheck(CheckHandler handler) {
+    public void onCheck(final CheckHandler handler) {
         PlayerData playerData = handler.getPlayerData();
         if (playerData.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             return;
@@ -73,7 +73,7 @@ public class KeepSprintA extends Check implements Setbackable {
     }
 
     @Override
-    public void handleSetback(AbstractCheckHandler handler) {
+    public void handleSetback(final AbstractCheckHandler handler) {
         Player player = handler.getPlayerData().getPlayer();
         if (player == null) {
             return;
