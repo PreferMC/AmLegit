@@ -77,13 +77,13 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly files('../libs/bruhspigot.jar')
-    compileOnly files('../libs/PlaceholderAPI-2.11.6.jar')
-    compileOnly files('../libs/packetevents-spigot-2.8.0.jar')
+    compileOnly files('libs/bruhspigot.jar')
+    compileOnly files('libs/PlaceholderAPI-2.11.6.jar')
+    compileOnly files('libs/packetevents-spigot-2.8.0.jar')
     implementation 'org.jetbrains:annotations:24.0.0'
     implementation 'com.samjakob:SpiGUI:1.4.1'
     // implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
-    implementation files('../libs/CommandLib-1.0.2-SNAPSHOT.jar')
+    implementation files('libs/CommandLib-1.0.2-SNAPSHOT.jar')
 
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
