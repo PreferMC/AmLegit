@@ -12,8 +12,8 @@ public final class LRUCache<E> {
     private Element<E> tail;
     private final Map<E, Element<E>> map;
 
-    public LRUCache(int var1) {
-        this.sizeLimit = var1;
+    public LRUCache(int sizeLimit) {
+        this.sizeLimit = sizeLimit;
         this.map = new HashMap<>();
     }
 

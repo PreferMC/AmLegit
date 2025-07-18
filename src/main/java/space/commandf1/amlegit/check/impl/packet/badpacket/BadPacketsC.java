@@ -7,8 +7,10 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWi
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowConfirmation;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import space.commandf1.amlegit.check.defaults.AlertDescription;
 import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.check.defaults.CheckHandler;
+import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.data.LRUCache;
 import space.commandf1.amlegit.data.PlayerData;
 
@@ -16,7 +18,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BadPacketsC extends Check {
-    private static final int MAX_DELAYED = 30 * 62;  // 若每秒62个transaction，最高允许30秒延迟；对于每个玩家，最大消耗约206K内存
+
+    @CheckConfigHandler(name = "max-delayed")
+    @AlertDescription(name = "MaxDelayed")
+    /* 若每秒62个transaction，最高允许30秒延迟；对于每个玩家，最大消耗约206K内存 */
+    private int maxDelayed = 30 * 62;
 
     private final Map<PlayerData, LRUCache<Short>> transactions = new ConcurrentHashMap<>();
 
@@ -28,7 +34,7 @@ public class BadPacketsC extends Check {
     private LRUCache<Short> getCache(@NotNull CheckHandler handler) {
         return transactions.computeIfAbsent(
                 handler.getPlayerData(),
-                k -> new LRUCache<>(MAX_DELAYED)
+                k -> new LRUCache<>(this.maxDelayed)
         );
     }
 
