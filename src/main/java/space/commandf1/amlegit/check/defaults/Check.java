@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
 import java.lang.reflect.Field;
@@ -54,9 +55,9 @@ public abstract class Check {
     }
 
     @SneakyThrows
-    public final String getInfoMessage() {
+    public final @NotNull String getInfoMessage(String description) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Description: §b").append(this.description).append("\n");
+        stringBuilder.append("Description: §b").append(description).append("\n");
         for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
             Field field = this.getClass().getDeclaredFields()[i];
             AlertDescription alertDescription = field.getAnnotation(AlertDescription.class);
@@ -71,6 +72,10 @@ public abstract class Check {
         }
 
         return  stringBuilder.toString();
+    }
+
+    public final @NotNull String getInfoMessage() {
+        return this.getInfoMessage(description);
     }
 
     public final boolean isSetbackable() {

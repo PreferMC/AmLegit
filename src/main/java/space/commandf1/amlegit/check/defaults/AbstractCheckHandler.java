@@ -74,7 +74,7 @@ public abstract class AbstractCheckHandler {
         return currentVL;
     }
 
-    public final void alert() {
+    public final void alert(String description) {
         String prefix = ChatColor.translateAlternateColorCodes('&',
                 SettingsConfig.getConfig(this.getCheck().getPlugin())
                         .getStringValue(SettingsConfig.Configs.PREFIX));
@@ -101,13 +101,17 @@ public abstract class AbstractCheckHandler {
             }
 
             TextComponent alertText = new TextComponent(prefix + alert);
-            TextComponent hoverText = new TextComponent(this.getCheck().getInfoMessage());
+            TextComponent hoverText = new TextComponent(this.getCheck().getInfoMessage(description));
             alertText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] { hoverText }));
             player.spigot().sendMessage(alertText);
         }
     }
 
-    private void punish() {
+    public final void alert() {
+        this.alert(this.getCheck().getDescription());
+    }
+
+    public void punish(String description) {
         CheckConfig config = CheckConfig.getConfig(this.check.getPlugin());
         CheckConfigHolder<?> commands = config.getCheckConfigHolder(this.check, "commands");
         if (commands.getValue() instanceof ActionHandler actionHandler) {
@@ -116,13 +120,17 @@ public abstract class AbstractCheckHandler {
                             .replace("%check%", this.getCheck().getName())
                             .replace("%type%", this.getCheck().getType())
                             .replace("%maxVL%", String.valueOf(this.getMaxVL()))
-                            .replace("%description%", this.getCheck().getDescription())
+                            .replace("%description%", description)
                             .replace("%vl%", String.valueOf(this.vl()))
                             .replace("%buffer%", String.valueOf(this.buffer()))
             ));
         }
         vls.put(playerData, 0L);
         buffers.put(playerData, 0L);
+    }
+
+    public void punish() {
+        this.punish(this.getCheck().getDescription());
     }
 
     public final long decreaseBuffer(long buffer) {

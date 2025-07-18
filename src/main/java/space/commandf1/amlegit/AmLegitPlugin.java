@@ -14,6 +14,7 @@ import space.commandf1.amlegit.check.impl.move.keepsprint.KeepSprintA;
 import space.commandf1.amlegit.check.impl.move.scaffold.ScaffoldA;
 import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsA;
 import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsB;
+import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsC;
 import space.commandf1.amlegit.command.AmLegitCommand;
 import space.commandf1.amlegit.config.check.CheckConfig;
 import space.commandf1.amlegit.config.settings.SettingsConfig;
@@ -49,6 +50,7 @@ public class AmLegitPlugin extends JavaPlugin {
         this.checkManager.registerChecks(
                 new BadPacketsA(this),
                 new BadPacketsB(this),
+                new BadPacketsC(this),
                 new KeepSprintA(this),
                 new GroundSpoofA(this),
                 new ScaffoldA(this)
