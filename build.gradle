@@ -30,6 +30,19 @@ allprojects {
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
+
+    tasks.withType(JavaExec) {
+        jvmArgs += [
+                '-Dorg.bytedeco.javacpp.maxbytes=4G', // 最大内存
+                '-Dorg.bytedeco.javacpp.maxphysicalbytes=8G' // 物理内存
+        ]
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class' : 'space.commandf1.amlegit.ai.AITrainer'
+    }
 }
 
 build {
@@ -70,7 +83,8 @@ repositories {
     maven { url 'https://repo.andrei1058.dev/releases/' }
     maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://repo.glaremasters.me/repository/concuncan/' }
-    maven { url 'https://repo.aikar.co/content/groups/aikar/'}
+    maven { url 'https://repo.aikar.co/content/groups/aikar/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
@@ -88,6 +102,26 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
+    /* AIs */
+/*
+    // core
+    implementation 'org.deeplearning4j:deeplearning4j-core:1.0.0-M2.1'
+
+    // cpu
+    // implementation 'org.nd4j:nd4j-native-platform:1.0.0-M2.1'
+
+    // gpu
+    implementation 'org.nd4j:nd4j-cuda-11.0-platform:1.0.0-M2.1'
+
+    // ui tools
+    implementation 'org.deeplearning4j:deeplearning4j-ui_2.11:1.0.0-M2.1'
+
+    // DataVec
+    implementation 'org.datavec:datavec-api:1.0.0-M2.1'
+
+    // log
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+*/
     testCompileOnly 'org.projectlombok:lombok:1.18.36'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
 }

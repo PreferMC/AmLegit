@@ -58,15 +58,15 @@ public abstract class Check {
     public final @NotNull String getInfoMessage(String description) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Description: §b").append(description).append("\n");
-        for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
-            Field field = this.getClass().getDeclaredFields()[i];
+        for (int i = 0; i < this.getClass().getFields().length; i++) {
+            Field field = this.getClass().getFields()[i];
             AlertDescription alertDescription = field.getAnnotation(AlertDescription.class);
             if (alertDescription == null) {
                 continue;
             }
             field.setAccessible(true);
             stringBuilder.append(alertDescription.name()).append(": §b").append(field.get(this).toString());
-            if (i < this.getClass().getDeclaredFields().length - 1) {
+            if (i < this.getClass().getFields().length - 1) {
                 stringBuilder.append("\n");
             }
         }

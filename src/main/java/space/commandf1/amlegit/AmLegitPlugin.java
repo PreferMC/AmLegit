@@ -16,12 +16,14 @@ import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsA;
 import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsB;
 import space.commandf1.amlegit.check.impl.packet.badpacket.BadPacketsC;
 import space.commandf1.amlegit.command.AmLegitCommand;
+import space.commandf1.amlegit.config.ai.AIDataConfig;
 import space.commandf1.amlegit.config.check.CheckConfig;
 import space.commandf1.amlegit.config.settings.SettingsConfig;
 import space.commandf1.amlegit.listener.CheckListener;
 import space.commandf1.amlegit.listener.DebugListener;
 import space.commandf1.amlegit.listener.PlayerListener;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class AmLegitPlugin extends JavaPlugin {
@@ -58,6 +60,14 @@ public class AmLegitPlugin extends JavaPlugin {
 
         this.checkConfig = new CheckConfig(this, this.checkManager);
         this.settingsConfig = new SettingsConfig(this);
+
+        File[] aiData = new File(this.getDataFolder(), "ai-data").listFiles();
+        if (aiData != null) {
+            for (File aiDatum : aiData) {
+                AIDataConfig.of(this, aiDatum);
+            }
+        }
+
         this.registerBukkitListeners(new PlayerListener(this));
         PacketEvents.getAPI().getEventManager().registerListener(new CheckListener(this),
                 PacketListenerPriority.HIGHEST);

@@ -26,22 +26,25 @@ public class ConfigHandler {
     private final YamlConfiguration config;
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public ConfigHandler(Plugin plugin, String name) {
+    public ConfigHandler(Plugin plugin, File parent, String name) {
         this.plugin = plugin;
         this.name = name;
 
-        File dataFolder = plugin.getDataFolder();
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs();
+        if (!parent.exists()) {
+            parent.mkdirs();
         }
 
-        this.configFile = new File(dataFolder.getPath() + File.separator + this.getName() + ".yml");
+        this.configFile = new File(parent.getPath() + File.separator + this.getName() + ".yml");
 
         if (this.configFile.exists()) {
             this.config = YamlConfiguration.loadConfiguration(this.configFile);
         } else {
             this.config =  new YamlConfiguration();
         }
+    }
+
+    public ConfigHandler(Plugin plugin, String name) {
+        this(plugin, plugin.getDataFolder(), name);
     }
 
     public final void setHeader(String[] header) {

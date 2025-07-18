@@ -107,7 +107,7 @@ public class CheckConfig extends ConfigHandler {
             }
 
             Map<String, CheckConfigHolder<?>> finalStringCheckConfigHolderMap = stringCheckConfigHolderMap;
-            Arrays.stream(checkClass.getDeclaredFields())
+            Arrays.stream(checkClass.getFields())
                     .filter(field -> field.getAnnotation(CheckConfigHandler.class) != null)
                     .forEach(checkConfigField -> {
                         checkConfigField.setAccessible(true);
