@@ -67,8 +67,12 @@ jar {
 sourceSets.main.java.files
         .findAll { it.text.contains('public static void main(String[] args)') }
         .each { file ->
-            def className = file.path
-                    .split("java${File.separator}")[1]
+            def javaSrcDir = sourceSets.main.java.srcDirs.first().absolutePath
+            if (!javaSrcDir.endsWith(File.separator)) {
+                javaSrcDir += File.separator
+            }
+            def relativePath = file.absolutePath.substring(javaSrcDir.length())
+            def className = relativePath
                     .replace(File.separator, '.')
                     .replace('.java', '')
 
