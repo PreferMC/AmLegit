@@ -7,6 +7,7 @@ import java.util.Map;
 public class AIData implements Cloneable, ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
+
         return Map.of();
     }
 

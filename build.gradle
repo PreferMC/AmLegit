@@ -39,12 +39,6 @@ allprojects {
     }
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class' : 'space.commandf1.amlegit.ai.AITrainer'
-    }
-}
-
 build {
     dependsOn shadowJar
 }
@@ -101,11 +95,6 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
-
-    /* AIs */
-    implementation 'ai.djl:api:0.33.0'
-    implementation 'ai.djl.pytorch:pytorch-engine:0.33.0'
-    runtimeOnly 'ai.djl.pytorch:pytorch-native-auto:1.9.1'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.36'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'

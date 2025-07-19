@@ -1,0 +1,108 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.0'
+    id 'maven-publish'
+}
+
+group = 'space.commandf1.amlegit.ai'
+version = '1.0-SNAPSHOT'
+
+build {
+    dependsOn shadowJar
+}
+
+shadowJar {
+    archiveFileName = "AmLegit-AI.jar"
+}
+
+repositories {
+    // mavenCentral()
+
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'https://repo.hpfxd.com/releases/' }
+    maven { url 'https://repo.andrei1058.dev/releases/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+    maven { url 'https://repo.codemc.io/repository/maven-snapshots/' }
+    maven { url 'https://repo.codemc.io/repository/nms/' }
+    maven { url 'https://simonsator.de/repo/' }
+    maven { url 'https://maven.citizensnpcs.co/repo' }
+    maven { url 'https://repo.alessiodp.com/releases/' }
+    maven { url 'https://repo.andrei1058.dev/releases/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.glaremasters.me/repository/concuncan/' }
+    maven { url 'https://repo.aikar.co/content/groups/aikar/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    implementation 'ai.djl:api:0.33.0'
+    implementation 'ai.djl.pytorch:pytorch-engine:0.33.0'
+    implementation 'ai.djl:bom:0.33.0'
+    implementation 'commons-cli:commons-cli:1.9.0'
+    implementation 'commons-io:commons-io:2.17.0'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.1'
+    implementation 'ai.djl:basicdataset:0.33.0'
+    implementation 'ai.djl:model-zoo:0.33.0'
+    implementation 'ai.djl.timeseries:timeseries:0.33.0'
+    implementation 'ai.djl.huggingface:tokenizers:0.33.0'
+    implementation 'ai.djl.audio:audio:0.33.0'
+    implementation 'ai.djl.mxnet:mxnet-model-zoo:0.33.0'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class' : 'space.commandf1.amlegit.ai.AITrainer'
+    }
+}
+
+sourceSets.main.java.files
+        .findAll { it.text.contains('public static void main(String[] args)') }
+        .each { file ->
+            def className = file.path
+                    .split("java${File.separator}")[1]
+                    .replace(File.separator, '.')
+                    .replace('.java', '')
+
+            def taskName = className.substring(className.lastIndexOf('.') + 1)
+
+            tasks.register(taskName, JavaExec) {
+                classpath = sourceSets.main.runtimeClasspath
+                mainClass = className
+                group = 'application'
+
+                System.properties.each { key, value ->
+                    if (key.startsWith('ai.djl.')) {
+                        systemProperty key, value
+                    }
+                }
+
+                if (!systemProperties.containsKey('ai.djl.logging.level')) {
+                    systemProperty 'ai.djl.logging.level', 'debug'
+                }
+
+                jvmArgs = jvmArgs + [
+                        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                        '--add-opens=java.base/java.lang.invoke=ALL-UNNAMED',
+                        '--add-opens=java.base/java.net=ALL-UNNAMED',
+                        '--add-opens=java.base/java.nio=ALL-UNNAMED',
+                        '--add-opens=java.base/java.time=ALL-UNNAMED',
+                        '--add-opens=java.base/java.util=ALL-UNNAMED',
+                        '--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED',
+                        '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+                        '--add-opens=java.base/sun.util.calendar=ALL-UNNAMED'
+                ]
+            }
+        }
+
+test {
+    useJUnitPlatform()
+}
