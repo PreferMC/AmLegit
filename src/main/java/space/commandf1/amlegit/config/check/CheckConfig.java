@@ -8,6 +8,7 @@ import space.commandf1.amlegit.check.action.ActionHandler;
 import space.commandf1.amlegit.config.ConfigHandler;
 import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class CheckConfig extends ConfigHandler {
@@ -107,7 +108,12 @@ public class CheckConfig extends ConfigHandler {
             }
 
             Map<String, CheckConfigHolder<?>> finalStringCheckConfigHolderMap = stringCheckConfigHolderMap;
-            Arrays.stream(checkClass.getFields())
+            ArrayList<Field> fields = new ArrayList<>(List.of(checkClass.getDeclaredFields()));
+            Class<?> superclass = checkClass.getSuperclass();
+            if (superclass != null) {
+                fields.addAll(List.of(superclass.getDeclaredFields()));
+            }
+            fields.stream()
                     .filter(field -> field.getAnnotation(CheckConfigHandler.class) != null)
                     .forEach(checkConfigField -> {
                         checkConfigField.setAccessible(true);

@@ -11,9 +11,7 @@ import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @ToString
 @EqualsAndHashCode
@@ -58,15 +56,20 @@ public abstract class Check {
     public final @NotNull String getInfoMessage(String description) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Description: §b").append(description).append("\n");
-        for (int i = 0; i < this.getClass().getFields().length; i++) {
-            Field field = this.getClass().getFields()[i];
+        List<Field> fields = new ArrayList<>(List.of(this.getClass().getDeclaredFields()));
+        Class<?> superclass = this.getClass().getSuperclass();
+        if (superclass != null) {
+            fields.addAll(List.of(superclass.getDeclaredFields()));
+        }
+        for (int i = 0; i < fields.size(); i++) {
+            Field field = fields.get(i);
             AlertDescription alertDescription = field.getAnnotation(AlertDescription.class);
             if (alertDescription == null) {
                 continue;
             }
             field.setAccessible(true);
             stringBuilder.append(alertDescription.name()).append(": §b").append(field.get(this).toString());
-            if (i < this.getClass().getFields().length - 1) {
+            if (i < fields.size() - 1) {
                 stringBuilder.append("\n");
             }
         }
