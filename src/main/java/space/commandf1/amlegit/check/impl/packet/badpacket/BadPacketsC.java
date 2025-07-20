@@ -11,12 +11,14 @@ import space.commandf1.amlegit.check.defaults.AlertDescription;
 import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.check.defaults.CheckHandler;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
+import space.commandf1.amlegit.config.check.DefaultDisableCheck;
 import space.commandf1.amlegit.data.PlayerData;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@DefaultDisableCheck
 public class BadPacketsC extends Check {
 
     @CheckConfigHandler(name = "max-delayed")
@@ -43,7 +45,8 @@ public class BadPacketsC extends Check {
         if (handler.getEvent() instanceof PacketSendEvent event
                 && event.getPacketType() == PacketType.Play.Server.WINDOW_CONFIRMATION) {
             LRUCache<Short> cache = getCache(handler);
-            cache.put(new WrapperPlayServerWindowConfirmation(event).getActionId());
+            WrapperPlayServerWindowConfirmation packet = new WrapperPlayServerWindowConfirmation(event);
+            cache.put(packet.getActionId());
         }
 
         if (handler.getEvent() instanceof PacketReceiveEvent event
