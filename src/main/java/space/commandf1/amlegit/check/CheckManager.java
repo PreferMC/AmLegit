@@ -29,7 +29,7 @@ public class CheckManager {
     }
 
     public void registerCheck(Check check) {
-        checks.put(check.getName(), check);
+        checks.put(check.getName() + check.getType(), check);
     }
 
     public static CheckManager getManager(Plugin plugin) {
