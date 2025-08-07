@@ -40,9 +40,9 @@ public class GroundSpoofA extends Check implements Setbackable {
         PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
         boolean onGround = tracker.isOnGround();
         boolean serverOnGround = tracker.isServerOnGround();
-        // boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
+        boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
 
-        if (onGround && !serverOnGround) {
+        if (onGround && !serverOnGround && !mathOnGround) {
             double[] offsets = {this.offset, -this.offset};
             for (double offset : offsets) {
                 Location clone = tracker.getLastLocation().clone();

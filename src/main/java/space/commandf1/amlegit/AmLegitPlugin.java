@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import space.commandf1.amlegit.check.CheckManager;
+import space.commandf1.amlegit.check.impl.move.analysis.AnalysisA;
 import space.commandf1.amlegit.check.impl.move.groundspoof.GroundSpoofA;
 import space.commandf1.amlegit.check.impl.move.keepsprint.KeepSprintA;
 import space.commandf1.amlegit.check.impl.move.scaffold.ScaffoldA;
@@ -55,7 +56,8 @@ public class AmLegitPlugin extends JavaPlugin {
                 new BadPacketsC(this),
                 new KeepSprintA(this),
                 new GroundSpoofA(this),
-                new ScaffoldA(this)
+                new ScaffoldA(this),
+                new AnalysisA(this)
         );
 
         this.checkConfig = new CheckConfig(this, this.checkManager);
