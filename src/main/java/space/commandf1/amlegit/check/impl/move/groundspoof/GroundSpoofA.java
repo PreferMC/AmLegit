@@ -37,7 +37,7 @@ public class GroundSpoofA extends Check implements Setbackable {
     @Override
     @ReceivedPacketOnly
     public void onCheck(final CheckHandler handler) {
-        PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
+        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
         boolean onGround = tracker.isOnGround();
         boolean serverOnGround = tracker.isServerOnGround();
         boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
@@ -84,7 +84,7 @@ public class GroundSpoofA extends Check implements Setbackable {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void handleSetback(final AbstractCheckHandler handler) {
-        PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
+        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
         handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation());
     }
 }

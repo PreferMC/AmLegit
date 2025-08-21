@@ -15,8 +15,8 @@ import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.util.ServerUtil;
 import space.commandf1.amlegit.util.StringUtil;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class AbstractCheckHandler {
@@ -26,7 +26,8 @@ public abstract class AbstractCheckHandler {
     @Getter
     private final Check check;
 
-    private static final Map<PlayerData, Long> buffers = new HashMap<>(), vls = new HashMap<>();
+    private static final Map<PlayerData, Long> buffers = new ConcurrentHashMap<>(),
+            vls = new ConcurrentHashMap<>();
 
     public AbstractCheckHandler(PlayerData playerData, Check check) {
         this.playerData = playerData;

@@ -14,7 +14,6 @@ import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.config.check.DefaultDisableCheck;
 import space.commandf1.amlegit.data.PlayerData;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -83,7 +82,7 @@ public class BadPacketsC extends Check {
 
         public LRUCache(int sizeLimit) {
             this.sizeLimit = sizeLimit;
-            this.map = new HashMap<>();
+            this.map = new ConcurrentHashMap<>();
         }
 
         private void moveToTheHead(@NotNull Element<E> var1) {

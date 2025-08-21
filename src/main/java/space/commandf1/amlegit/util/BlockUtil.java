@@ -19,7 +19,7 @@ public class BlockUtil {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static Block getBlockOnGround(final PlayerData playerData, double offset) {
-        PositionTracker tracker = (PositionTracker) playerData.getTracker(PositionTracker.class).get();
+        PositionTracker tracker = playerData.getTracker(PositionTracker.class).get();
 
         double[] offsets = {offset, -offset};
         for (double offset1 : offsets) {

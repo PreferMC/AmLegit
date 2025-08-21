@@ -41,7 +41,7 @@ public class KeepSprintA extends Check implements Setbackable {
         }
         PacketReceiveEvent event = (PacketReceiveEvent) handler.getEvent();
         WrapperPlayClientEntityAction packet = new WrapperPlayClientEntityAction(event);
-        PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
+        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
 
         if (packet.getAction() == WrapperPlayClientEntityAction.Action.STOP_SNEAKING) {
             /* Update the last stop sneaking time */

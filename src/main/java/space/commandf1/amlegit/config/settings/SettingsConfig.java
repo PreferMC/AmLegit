@@ -4,11 +4,11 @@ import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.config.ConfigHandler;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsConfig extends ConfigHandler {
-    private static final Map<Plugin, SettingsConfig> settingsConfigs = new HashMap<>();
+    private static final Map<Plugin, SettingsConfig> settingsConfigs = new ConcurrentHashMap<>();
 
     public SettingsConfig(Plugin plugin) {
         super(plugin, "settings");

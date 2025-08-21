@@ -6,9 +6,8 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.event.ProtocolPacketEvent;
 import org.bukkit.entity.Player;
 import space.commandf1.amlegit.AmLegitPlugin;
-import space.commandf1.amlegit.check.defaults.Check;
-import space.commandf1.amlegit.check.defaults.CheckHandler;
 import space.commandf1.amlegit.check.CheckManager;
+import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.config.check.CheckConfig;
 import space.commandf1.amlegit.config.settings.SettingsConfig;
 import space.commandf1.amlegit.data.PlayerData;
@@ -42,7 +41,7 @@ public class CheckListener implements PacketListener {
             return;
         }
 
-        if (!((PositionTracker) playerData.getTracker(PositionTracker.class).get()).hasInit()) return;
+        if (!playerData.getTracker(PositionTracker.class).get().hasInit()) return;
 
         CheckManager checkManager = this.plugin.getCheckManager();
         for (Check check : checkManager.getChecks()) {
@@ -64,7 +63,7 @@ public class CheckListener implements PacketListener {
                 continue;
             }
 
-            check.onCheck(new CheckHandler(playerData, check, event));
+            check.onCheck(check.newCheckHandler(playerData, check, event));
         }
     }
 

@@ -5,13 +5,13 @@ import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.check.defaults.Check;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CheckManager {
-    private static final Map<Plugin, CheckManager> managers = new HashMap<>();
+    private static final Map<Plugin, CheckManager> managers = new ConcurrentHashMap<>();
 
-    private final Map<String, Check> checks = new HashMap<>();
+    private final Map<String, Check> checks = new ConcurrentHashMap<>();
 
     @Getter
     private final Plugin plugin;

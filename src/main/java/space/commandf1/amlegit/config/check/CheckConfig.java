@@ -10,13 +10,14 @@ import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CheckConfig extends ConfigHandler {
-    private static final Map<Plugin, CheckConfig> checkConfigs = new HashMap<>();
+    private static final Map<Plugin, CheckConfig> checkConfigs = new ConcurrentHashMap<>();
 
     private final CheckManager checkManager;
 
-    private final Map<Check, Map<String, CheckConfigHolder<?>>> checkConfigHolders = new HashMap<>();
+    private final Map<Check, Map<String, CheckConfigHolder<?>>> checkConfigHolders = new ConcurrentHashMap<>();
 
     public CheckConfig(Plugin plugin, CheckManager checkManager) {
         super(plugin, "checks");
@@ -78,7 +79,7 @@ public class CheckConfig extends ConfigHandler {
         for (Check check : checkManager.getChecks()) {
             Map<String, CheckConfigHolder<?>> stringCheckConfigHolderMap = checkConfigHolders.get(check);
             if (stringCheckConfigHolderMap == null) {
-                stringCheckConfigHolderMap = new HashMap<>();
+                stringCheckConfigHolderMap = new ConcurrentHashMap<>();
             }
 
             String prefix = check.getName() + "." + check.getType() + ".";

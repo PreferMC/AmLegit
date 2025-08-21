@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ToString
 @EqualsAndHashCode
 public final class PlayerData {
-    private static final Map<UUID, PlayerData> data = new HashMap<>();
+    private static final Map<UUID, PlayerData> data = new ConcurrentHashMap<>();
 
     public static PlayerData getByUUID(UUID uuid) {
         return data.get(uuid);
@@ -36,8 +36,8 @@ public final class PlayerData {
 
     private final Map<String, Object> values = new ConcurrentHashMap<>();
 
-    public Optional<Tracker> getTracker(Class<? extends Tracker> trackerClass) {
-        return trackers.stream().filter(trackerClass::isInstance).findFirst();
+    public <T extends Tracker> Optional<T> getTracker(Class<T> trackerClass) {
+        return trackers.stream().filter(trackerClass::isInstance).map(trackerClass::cast).findFirst();
     }
 
     @SuppressWarnings("UnusedReturnValue")

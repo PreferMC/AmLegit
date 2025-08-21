@@ -1,5 +1,6 @@
 package space.commandf1.amlegit.check.defaults;
 
+import com.github.retrooper.packetevents.event.ProtocolPacketEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.SneakyThrows;
 import lombok.ToString;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
 import java.lang.reflect.Field;
@@ -94,4 +96,16 @@ public abstract class Check {
     }
 
     public abstract void onCheck(final CheckHandler handler);
+
+    public void onCheck(final AbstractCheckHandler handler) {
+        if (handler instanceof CheckHandler) {
+            this.onCheck((CheckHandler) handler);
+        }
+    }
+
+    public AbstractCheckHandler newCheckHandler(PlayerData playerData,
+                                                Check check,
+                                                ProtocolPacketEvent packetEvent) {
+        return new CheckHandler(playerData, check, packetEvent);
+    }
 }

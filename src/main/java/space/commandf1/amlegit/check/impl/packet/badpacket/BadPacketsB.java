@@ -40,7 +40,7 @@ public class BadPacketsB extends Check implements Setbackable {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void onCheck(final CheckHandler handler) {
-        NetworkTracker tracker = (NetworkTracker) handler.getPlayerData().getTracker(NetworkTracker.class).get();
+        NetworkTracker tracker = handler.getPlayerData().getTracker(NetworkTracker.class).get();
 
         if (Math.abs(tracker.getLastPing() - tracker.getPing()) > this.maxPingDifference) {
             return;
@@ -67,7 +67,7 @@ public class BadPacketsB extends Check implements Setbackable {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void handleSetback(final AbstractCheckHandler handler) {
-        PositionTracker tracker = (PositionTracker) handler.getPlayerData().getTracker(PositionTracker.class).get();
+        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
         handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation());
     }
 }
