@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.data.PlayerData;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +41,7 @@ public class KeepSprintA extends Check implements Setbackable {
         }
         PacketReceiveEvent event = (PacketReceiveEvent) handler.getEvent();
         WrapperPlayClientEntityAction packet = new WrapperPlayClientEntityAction(event);
-        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
+        var positionTrackerDataProvider = handler.getTrackerDataProvider(PositionTrackerDataProvider.class).get();
 
         if (packet.getAction() == WrapperPlayClientEntityAction.Action.STOP_SNEAKING) {
             /* Update the last stop sneaking time */
@@ -59,7 +59,7 @@ public class KeepSprintA extends Check implements Setbackable {
             sprintPacketSent.put(playerData, System.currentTimeMillis());
 
             /* Check if the player is sneaking or has recently stopped sneaking within tolerance */
-            boolean isSneaking = tracker.isSneaking();
+            boolean isSneaking = positionTrackerDataProvider.isSneaking();
             boolean hasRecentlyStoppedSneaking = stopSneakTime.containsKey(playerData)
                     && (System.currentTimeMillis() - stopSneakTime.get(playerData)) <= this.tolerance;
 

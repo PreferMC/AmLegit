@@ -7,8 +7,8 @@ import lombok.ToString;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.tracker.Tracker;
-import space.commandf1.amlegit.tracker.impl.NetworkTracker;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.tracker.trackers.NetworkTracker;
+import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 import space.commandf1.amlegit.util.PlayerUtil;
 
 import java.util.*;

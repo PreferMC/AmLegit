@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import space.commandf1.amlegit.data.PlayerData;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
 import java.util.List;
 

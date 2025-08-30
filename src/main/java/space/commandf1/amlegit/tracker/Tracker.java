@@ -31,4 +31,6 @@ public abstract class Tracker implements PacketListener {
     public abstract void handle(PacketReceiveEvent event);
 
     public abstract void handle(PacketSendEvent event);
+
+    public abstract <T extends TrackerDataProvider<?>> T currentDataProvider();
 }

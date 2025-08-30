@@ -110,7 +110,7 @@ public class BadPacketsC extends Check {
                 this.tail.next = this.tail;
                 ++this.size;
             } else if (this.size < this.sizeLimit) {
-                var var2 = new Element<E>(var1);
+                var var2 = new Element<>(var1);
                 this.map.put(var1, var2);
                 var2.prev = var2;
                 var2.next = this.head;

@@ -6,8 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import space.commandf1.amlegit.config.check.SynchronousCheck;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
@@ -37,10 +39,12 @@ public abstract class Check {
         this.init();
     }
 
-    private boolean hasReceivedPacketOnly, hasSentPacketOnly;
+    private boolean hasReceivedPacketOnly, hasSentPacketOnly, isSynchronousCheck;
 
     @SneakyThrows
     private void init() {
+        this.isSynchronousCheck = this.getClass().getAnnotation(SynchronousCheck.class) != null;
+
         Method method = this.getClass().getDeclaredMethod("onCheck", CheckHandler.class);
         this.hasReceivedPacketOnly = method.getAnnotation(ReceivedPacketOnly.class) != null;
         this.hasSentPacketOnly = method.getAnnotation(SentPacketOnly.class) != null;
@@ -95,12 +99,24 @@ public abstract class Check {
         return this.hasReceivedPacketOnly;
     }
 
+    public final boolean isSynchronousCheck() {
+        return this.isSynchronousCheck;
+    }
+
     public abstract void onCheck(final CheckHandler handler);
 
     public void onCheck(final AbstractCheckHandler handler) {
         if (handler instanceof CheckHandler) {
             this.onCheck((CheckHandler) handler);
         }
+    }
+
+    protected final void runTaskSynchronously(Runnable runnable) {
+        Bukkit.getScheduler().runTask(this.getPlugin(), runnable);
+    }
+
+    protected final void runTaskAsynchronously(Runnable runnable) {
+        Bukkit.getScheduler().runTaskAsynchronously(this.getPlugin(), runnable);
     }
 
     public AbstractCheckHandler newCheckHandler(PlayerData playerData,

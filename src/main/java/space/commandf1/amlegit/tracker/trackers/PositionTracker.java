@@ -1,4 +1,4 @@
-package space.commandf1.amlegit.tracker.impl;
+package space.commandf1.amlegit.tracker.trackers;
 
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.tracker.Tracker;
+import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 import space.commandf1.amlegit.util.BlockUtil;
 
 public class PositionTracker extends Tracker {
@@ -31,12 +32,12 @@ public class PositionTracker extends Tracker {
     @Getter
     private long lastRespawnTime;
 
+    @Getter
+    private org.bukkit.Location location, lastLocation, lastLastLocation, lastLastLastLocation;
+
     public boolean hasRespawned() {
         return this.hasRespawned;
     }
-
-    @Getter
-    private org.bukkit.Location location, lastLocation, lastLastLocation, lastLastLastLocation;
 
     public PositionTracker(PlayerData playerData) {
         super(playerData);
@@ -127,5 +128,11 @@ public class PositionTracker extends Tracker {
 
             this.lastRespawnTime = System.currentTimeMillis();
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public PositionTrackerDataProvider currentDataProvider() {
+        return new PositionTrackerDataProvider(this);
     }
 }

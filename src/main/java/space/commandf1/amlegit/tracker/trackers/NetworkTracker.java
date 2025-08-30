@@ -1,4 +1,4 @@
-package space.commandf1.amlegit.tracker.impl;
+package space.commandf1.amlegit.tracker.trackers;
 
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.tracker.Tracker;
+import space.commandf1.amlegit.tracker.providers.NetworkTrackerDataProvider;
 import space.commandf1.amlegit.util.PlayerUtil;
 
 public class NetworkTracker extends Tracker implements Runnable {
@@ -15,7 +16,9 @@ public class NetworkTracker extends Tracker implements Runnable {
 
     public NetworkTracker(PlayerData playerData) {
         super(playerData);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlayerData().getPlugin(), this, 0, 1);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(
+                this.getPlayerData().getPlugin(), this, 0, 1
+        );
     }
 
     @Override
@@ -41,5 +44,11 @@ public class NetworkTracker extends Tracker implements Runnable {
 
     @Override
     public void handle(PacketSendEvent event) {
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public NetworkTrackerDataProvider currentDataProvider() {
+        return new NetworkTrackerDataProvider(this);
     }
 }

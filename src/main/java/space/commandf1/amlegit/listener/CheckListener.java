@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.event.ProtocolPacketEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import space.commandf1.amlegit.AmLegitPlugin;
 import space.commandf1.amlegit.check.CheckManager;
@@ -11,7 +12,7 @@ import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.config.check.CheckConfig;
 import space.commandf1.amlegit.config.settings.SettingsConfig;
 import space.commandf1.amlegit.data.PlayerData;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
 public class CheckListener implements PacketListener {
     private final AmLegitPlugin plugin;
@@ -63,7 +64,13 @@ public class CheckListener implements PacketListener {
                 continue;
             }
 
-            check.onCheck(check.newCheckHandler(playerData, check, event));
+            if (check.isSynchronousCheck()) {
+                check.onCheck(check.newCheckHandler(playerData, check, event));
+            } else {
+                Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
+                        check.onCheck(check.newCheckHandler(playerData, check, event)));
+            }
+
         }
     }
 

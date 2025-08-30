@@ -8,7 +8,8 @@ import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.config.check.DefaultDisableCheck;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
+import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 import space.commandf1.amlegit.util.BlockUtil;
 
 import java.util.List;
@@ -37,16 +38,16 @@ public class GroundSpoofA extends Check implements Setbackable {
     @Override
     @ReceivedPacketOnly
     public void onCheck(final CheckHandler handler) {
-        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
-        boolean onGround = tracker.isOnGround();
-        boolean serverOnGround = tracker.isServerOnGround();
-        boolean mathOnGround = tracker.getLocation().getY() % this.blockStep == 0.0D;
+        var positionTrackerDataProvider = handler.getTrackerDataProvider(PositionTrackerDataProvider.class).get();
+        boolean onGround = positionTrackerDataProvider.isOnGround();
+        boolean serverOnGround = positionTrackerDataProvider.isServerOnGround();
+        boolean mathOnGround = positionTrackerDataProvider.getLocation().getY() % this.blockStep == 0.0D;
 
         if (onGround && !serverOnGround && !mathOnGround) {
             double[] offsets = {this.offset, -this.offset};
             for (double offset : offsets) {
-                Location clone = tracker.getLastLocation().clone();
-                List<Double> trys = List.of(tracker.getLocation().getY(), tracker.getLocation().getY() -1);
+                Location clone = positionTrackerDataProvider.getLastLocation().clone();
+                List<Double> trys = List.of(positionTrackerDataProvider.getLocation().getY(), positionTrackerDataProvider.getLocation().getY() -1);
                 for (Double aTry : trys) {
                     clone.setY(aTry);
 
@@ -60,8 +61,8 @@ public class GroundSpoofA extends Check implements Setbackable {
             }
 
             for (double offset : offsets) {
-                Location clone = tracker.getLastLocation().clone();
-                List<Double> trys = List.of(tracker.getLocation().getY(), tracker.getLocation().getY() -1);
+                Location clone = positionTrackerDataProvider.getLastLocation().clone();
+                List<Double> trys = List.of(positionTrackerDataProvider.getLocation().getY(), positionTrackerDataProvider.getLocation().getY() -1);
                 for (Double aTry : trys) {
                     clone.setY(aTry);
                     clone.setZ(clone.getZ() + offset);

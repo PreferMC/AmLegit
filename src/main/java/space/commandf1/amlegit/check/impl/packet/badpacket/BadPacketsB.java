@@ -5,9 +5,11 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
-import space.commandf1.amlegit.tracker.impl.NetworkTracker;
-import space.commandf1.amlegit.tracker.impl.PositionTracker;
+import space.commandf1.amlegit.config.check.DefaultDisableCheck;
+import space.commandf1.amlegit.tracker.providers.NetworkTrackerDataProvider;
+import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
+@DefaultDisableCheck
 public class BadPacketsB extends Check implements Setbackable {
 
     @CheckConfigHandler(name = "tolerance")
@@ -40,14 +42,14 @@ public class BadPacketsB extends Check implements Setbackable {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void onCheck(final CheckHandler handler) {
-        NetworkTracker tracker = handler.getPlayerData().getTracker(NetworkTracker.class).get();
+        var networkTrackerDataProvider = handler.getTrackerDataProvider(NetworkTrackerDataProvider.class).get();
 
-        if (Math.abs(tracker.getLastPing() - tracker.getPing()) > this.maxPingDifference) {
+        if (Math.abs(networkTrackerDataProvider.getLastPing() - networkTrackerDataProvider.getPing()) > this.maxPingDifference) {
             return;
         }
 
-        if (Math.abs(tracker.getHighestPing() - tracker.getPing()) < this.pingTolerance
-                && Math.abs(tracker.getHighestPing() - tracker.getLowestPing()) > this.maxPingDifference) {
+        if (Math.abs(networkTrackerDataProvider.getHighestPing() - networkTrackerDataProvider.getPing()) < this.pingTolerance
+                && Math.abs(networkTrackerDataProvider.getHighestPing() - networkTrackerDataProvider.getLowestPing()) > this.maxPingDifference) {
             return;
         }
 
@@ -59,7 +61,7 @@ public class BadPacketsB extends Check implements Setbackable {
             }
         }
 
-        if (handler.buffer() > this.tolerance + ((double) (tracker.getPing() * 2L) / 1000) / 0.05D) {
+        if (handler.buffer() > this.tolerance + ((double) (networkTrackerDataProvider.getPing() * 2L) / 1000) / 0.05D) {
             handler.fail();
         }
     }

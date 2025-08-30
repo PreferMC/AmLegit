@@ -12,10 +12,14 @@ import space.commandf1.amlegit.config.check.CheckConfig;
 import space.commandf1.amlegit.config.check.CheckConfigHolder;
 import space.commandf1.amlegit.config.settings.SettingsConfig;
 import space.commandf1.amlegit.data.PlayerData;
+import space.commandf1.amlegit.tracker.TrackerDataProvider;
 import space.commandf1.amlegit.util.ServerUtil;
 import space.commandf1.amlegit.util.StringUtil;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -26,15 +30,22 @@ public abstract class AbstractCheckHandler {
     @Getter
     private final Check check;
 
+    private final Set<TrackerDataProvider<?>> trackers = new HashSet<>();
+
+    public <T extends TrackerDataProvider<?>> Optional<T> getTrackerDataProvider(Class<T> trackerClass) {
+        return trackers.stream().filter(trackerClass::isInstance).map(trackerClass::cast).findFirst();
+    }
+
     private static final Map<PlayerData, Long> buffers = new ConcurrentHashMap<>(),
             vls = new ConcurrentHashMap<>();
 
     public AbstractCheckHandler(PlayerData playerData, Check check) {
         this.playerData = playerData;
         this.check = check;
+        this.playerData.getTrackers().forEach(tracker -> trackers.add(tracker.currentDataProvider()));
     }
 
-    public final long increaseBuffer(long buffer) {
+    public synchronized final long increaseBuffer(long buffer) {
         Long currentBuffer = buffers.get(this.playerData);
         if (currentBuffer == null) {
             currentBuffer = 0L;
@@ -49,7 +60,7 @@ public abstract class AbstractCheckHandler {
                 .getCheckConfigHolder(this.getCheck(), "maxVL").getValue();
     }
 
-    public final long fail() {
+    public synchronized final long fail() {
         Long currentVL = vls.get(playerData);
         if (currentVL == null) {
             currentVL = 0L;
@@ -92,7 +103,9 @@ public abstract class AbstractCheckHandler {
                 .replace("%maxvl%", String.valueOf(this.getMaxVL()));
         alert = ChatColor.translateAlternateColorCodes('&', alert);
         if (SettingsConfig.getConfig(this.getCheck().getPlugin()).getBooleanValue(SettingsConfig.Configs.ALERT_TO_CONSOLE)) {
-            Bukkit.getConsoleSender().sendMessage(prefix + alert);
+            String finalAlert = alert;
+            Bukkit.getScheduler().runTask(this.getCheck().getPlugin(),
+                    () -> Bukkit.getConsoleSender().sendMessage(prefix + finalAlert));
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -104,7 +117,8 @@ public abstract class AbstractCheckHandler {
             TextComponent alertText = new TextComponent(prefix + alert);
             TextComponent hoverText = new TextComponent(this.getCheck().getInfoMessage(description));
             alertText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] { hoverText }));
-            player.spigot().sendMessage(alertText);
+            Bukkit.getScheduler().runTask(this.getCheck().getPlugin(),
+                    () -> player.spigot().sendMessage(alertText));
         }
     }
 
@@ -112,7 +126,7 @@ public abstract class AbstractCheckHandler {
         this.alert(this.getCheck().getDescription());
     }
 
-    public void punish(String description) {
+    public synchronized void punish(String description) {
         CheckConfig config = CheckConfig.getConfig(this.check.getPlugin());
         CheckConfigHolder<?> commands = config.getCheckConfigHolder(this.check, "commands");
         if (commands.getValue() instanceof ActionHandler actionHandler) {
@@ -134,7 +148,7 @@ public abstract class AbstractCheckHandler {
         this.punish(this.getCheck().getDescription());
     }
 
-    public final long decreaseBuffer(long buffer) {
+    public synchronized final long decreaseBuffer(long buffer) {
         long currentBuffer = buffers.computeIfAbsent(this.playerData, k -> 0L);
 
         currentBuffer -= Math.min(currentBuffer, buffer);
@@ -142,11 +156,11 @@ public abstract class AbstractCheckHandler {
         return currentBuffer;
     }
 
-    public final long buffer() {
+    public synchronized final long buffer() {
         return buffers.computeIfAbsent(this.playerData, k -> 0L);
     }
 
-    public final long vl() {
+    public synchronized final long vl() {
         return vls.computeIfAbsent(this.playerData, k -> 0L);
     }
 }
