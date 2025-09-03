@@ -25,10 +25,6 @@ public class ScaffoldA extends Check {
     @AlertDescription(name = "MaxBuffer")
     private int maxBuffer = 3;
 
-    @CheckConfigHandler(name = "on-ground-offset")
-    @AlertDescription(name = "OnGroundOffset")
-    private double offset = 0.331D;
-
     @CheckConfigHandler(name = "maxCursorPositionOffSide")
     @AlertDescription(name = "MaxCursorPositionOffSide")
     private double maxCursorPositionOffSide = 0.9375D;
@@ -74,7 +70,7 @@ public class ScaffoldA extends Check {
         });
 
         if (packet.getFace() != BlockFace.OTHER) {
-            Block blockOnGround = BlockUtil.getBlockOnGround(playerData, this.offset);
+            Block blockOnGround = BlockUtil.getExactStandingBlock(playerData.getPlayer());
             if (blockOnGround != null
                     && blockOnGround.getLocation().getBlockX() == blockPosition.getX()
                     && blockOnGround.getLocation().getBlockY() == blockPosition.getY()

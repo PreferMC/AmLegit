@@ -2,11 +2,10 @@ package space.commandf1.amlegit.util;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import space.commandf1.amlegit.data.PlayerData;
-import space.commandf1.amlegit.tracker.trackers.PositionTracker;
-
-import java.util.List;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class BlockUtil {
     public static Block getBlockAsync(final Location location) {
@@ -17,41 +16,36 @@ public class BlockUtil {
         }
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public static Block getBlockOnGround(final PlayerData playerData, double offset) {
-        PositionTracker tracker = playerData.getTracker(PositionTracker.class).get();
+    public static Block getExactStandingBlock(Player player) {
+        Location playerLoc = player.getEyeLocation();
+        World world = player.getWorld();
 
-        double[] offsets = {offset, -offset};
-        for (double offset1 : offsets) {
-            Location clone = tracker.getLastLocation().clone();
-            List<Double> trys = List.of(tracker.getLocation().getY(), tracker.getLocation().getY() -1);
-            for (Double aTry : trys) {
-                clone.setY(aTry);
+        Vector direction = playerLoc.getDirection();
+        direction.setY(-0.1);
 
-                clone.setX(clone.getX() + offset1);
+        double checkDistance = 2.0;
+        double stepSize = 0.2;
 
-                Block block = clone.getBlock();
-                if (block != null && !BlockUtil.isPassable(block.getType()) && block.getType() != Material.AIR) {
+        Location checkLoc = playerLoc.clone();
+        Block lastNonAirBlock = null;
+
+        for (double d = 0; d <= checkDistance; d += stepSize) {
+            checkLoc.add(direction.getX() * stepSize, direction.getY() * stepSize, direction.getZ() * stepSize);
+            Block block = world.getBlockAt(checkLoc);
+
+            if (block.getType() != Material.AIR) {
+                if (!isPassable(block)) {
                     return block;
                 }
+                lastNonAirBlock = block;
             }
         }
 
-        for (double offset1 : offsets) {
-            Location clone = tracker.getLastLocation().clone();
-            List<Double> trys = List.of(tracker.getLocation().getY(), tracker.getLocation().getY() -1);
-            for (Double aTry : trys) {
-                clone.setY(aTry);
-                clone.setZ(clone.getZ() + offset1);
-
-                Block block = clone.getBlock();
-                if (block != null && !BlockUtil.isPassable(block.getType()) && block.getType() != Material.AIR) {
-                    return block;
-                }
-            }
+        if (lastNonAirBlock != null) {
+            return lastNonAirBlock;
+        } else {
+            return world.getBlockAt(playerLoc.getBlockX(), playerLoc.getBlockY() - 1, playerLoc.getBlockZ());
         }
-
-        return null;
     }
 
     public static boolean isPassable(final Block block) {
