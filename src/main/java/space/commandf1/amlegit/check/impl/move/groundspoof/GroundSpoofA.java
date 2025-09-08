@@ -8,6 +8,11 @@ import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
+import java.util.Optional;
+
+import static space.commandf1.amlegit.constant.MathConstant.EPSILON;
+import static space.commandf1.amlegit.constant.MinecraftConstant.BLOCK_STEP;
+
 /**
  * @author commandf1
  */
@@ -16,24 +21,26 @@ public class GroundSpoofA extends Check implements Setbackable {
     @AlertDescription(name = "MaxBuffer")
     private int maxBuffer = 1000;
 
-    @CheckConfigHandler(name = "block-step")
-    @AlertDescription(name = "BlockStep")
-    private double blockStep = (double) 1 / 64;
-
     public GroundSpoofA(Plugin plugin) {
         super("GroundSpoof", 10, "Check for ground spoof", "A", plugin);
         this.addAllowedPackets(PacketType.Play.Client.PLAYER_POSITION,
                 PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION);
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     @ReceivedPacketOnly
     public void onCheck(final CheckHandler handler) {
-        val positionTrackerDataProvider = handler.getTrackerDataProvider(PositionTrackerDataProvider.class).get();
+        Optional<PositionTrackerDataProvider> optionalProvider = handler.getTrackerDataProvider(PositionTrackerDataProvider.class);
+        if (optionalProvider.isEmpty()) {
+            return;
+        }
+
+        val positionTrackerDataProvider = optionalProvider.get();
         val onGround = positionTrackerDataProvider.isOnGround();
         val serverOnGround = positionTrackerDataProvider.isServerOnGround();
-        val mathOnGround = positionTrackerDataProvider.getLocation().getY() % this.blockStep == 0.0D;
+
+        double y = positionTrackerDataProvider.getLocation().getY();
+        boolean mathOnGround = Math.abs(y % BLOCK_STEP) < EPSILON || Math.abs(y % BLOCK_STEP - BLOCK_STEP) < EPSILON;
 
         if (onGround && !serverOnGround && !mathOnGround) {
             if (handler.increaseBuffer(1000) > this.maxBuffer) {
@@ -44,10 +51,9 @@ public class GroundSpoofA extends Check implements Setbackable {
         }
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void handleSetback(final AbstractCheckHandler handler) {
-        PositionTracker tracker = handler.getPlayerData().getTracker(PositionTracker.class).get();
-        handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation());
+        Optional<PositionTracker> optionalTracker = handler.getPlayerData().getTracker(PositionTracker.class);
+        optionalTracker.ifPresent(tracker -> handler.getPlayerData().getPlayer().teleport(tracker.getLastLastLastLocation()));
     }
 }
