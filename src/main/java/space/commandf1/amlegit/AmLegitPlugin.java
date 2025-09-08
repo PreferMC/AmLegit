@@ -41,6 +41,7 @@ public class AmLegitPlugin extends JavaPlugin {
         PacketEvents.getAPI().load();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void onEnable() {
         PacketEvents.getAPI().init();

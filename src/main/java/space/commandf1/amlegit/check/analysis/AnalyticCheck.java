@@ -82,7 +82,7 @@ public abstract class AnalyticCheck extends Check {
             packets = new ConcurrentSkipListMap<>();
         }
 
-        packets.put(packetReceivalTimestamp, handler);
+        packets.put(clientSendingTimestamp, handler);
 
         this.serverTrackers.put(handler.getPlayerData(), trackers);
         this.clientPackets.put(handler.getPlayerData(), packets);
