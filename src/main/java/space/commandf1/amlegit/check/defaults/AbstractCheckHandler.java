@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author commandf1
+ */
 @SuppressWarnings("UnusedReturnValue")
 public abstract class AbstractCheckHandler {
     @Getter

@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * so that we can ensure check is performing under 0ms delay
  * to disable some disablers like C03, C0F, etc.
  * and to check players without considering network delay.
+ *
+ * @author commandf1
  * */
 @ToString
 @EqualsAndHashCode(callSuper = true)

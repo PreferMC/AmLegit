@@ -8,8 +8,11 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author commandf1
+ */
 public class CheckManager {
-    private static final Map<Plugin, CheckManager> managers = new ConcurrentHashMap<>();
+    private static final Map<Plugin, CheckManager> MANAGERS = new ConcurrentHashMap<>();
 
     private final Map<String, Check> checks = new ConcurrentHashMap<>();
 
@@ -33,12 +36,12 @@ public class CheckManager {
     }
 
     public static CheckManager getManager(Plugin plugin) {
-        CheckManager toReturn = managers.get(plugin);
+        CheckManager toReturn = MANAGERS.get(plugin);
         if (toReturn == null) {
             toReturn = new CheckManager(plugin);
         }
 
-        managers.put(plugin, toReturn);
+        MANAGERS.put(plugin, toReturn);
 
         return toReturn;
     }

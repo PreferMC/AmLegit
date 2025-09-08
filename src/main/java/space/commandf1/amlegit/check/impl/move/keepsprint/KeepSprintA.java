@@ -15,6 +15,9 @@ import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author commandf1
+ */
 @DefaultDisableCheck
 public class KeepSprintA extends Check implements Setbackable {
     @CheckConfigHandler(name = "max-buffer")

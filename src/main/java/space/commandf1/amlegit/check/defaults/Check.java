@@ -16,6 +16,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * @author commandf1
+ */
 @ToString
 @EqualsAndHashCode
 @Getter

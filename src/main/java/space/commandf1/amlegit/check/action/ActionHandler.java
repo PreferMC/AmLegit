@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * @author commandf1
+ */
 public class ActionHandler {
 
     private final String[] commands;

@@ -8,6 +8,9 @@ import space.commandf1.amlegit.config.check.CheckConfigHandler;
 import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
+/**
+ * @author commandf1
+ */
 public class GroundSpoofA extends Check implements Setbackable {
     @CheckConfigHandler(name = "max-buffer")
     @AlertDescription(name = "MaxBuffer")

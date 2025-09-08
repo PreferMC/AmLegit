@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+/**
+ * @author commandf1
+ */
 public class AnalyticCheckHandler extends AbstractCheckHandler {
 
     private final NavigableMap<Long, Set<TrackerDataProvider<?>>> serverTrackers;
