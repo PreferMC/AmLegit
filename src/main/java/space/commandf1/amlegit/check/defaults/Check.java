@@ -9,7 +9,6 @@ import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import space.commandf1.amlegit.config.check.SynchronousCheck;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.exception.InvalidCheckClassException;
 
@@ -39,12 +38,10 @@ public abstract class Check {
         this.init();
     }
 
-    private boolean hasReceivedPacketOnly, hasSentPacketOnly, isSynchronousCheck;
+    private boolean hasReceivedPacketOnly, hasSentPacketOnly;
 
     @SneakyThrows
     private void init() {
-        this.isSynchronousCheck = this.getClass().getAnnotation(SynchronousCheck.class) != null;
-
         Method method = this.getClass().getDeclaredMethod("onCheck", CheckHandler.class);
         this.hasReceivedPacketOnly = method.getAnnotation(ReceivedPacketOnly.class) != null;
         this.hasSentPacketOnly = method.getAnnotation(SentPacketOnly.class) != null;
@@ -97,10 +94,6 @@ public abstract class Check {
 
     public final boolean isReceivedPacketOnly() {
         return this.hasReceivedPacketOnly;
-    }
-
-    public final boolean isSynchronousCheck() {
-        return this.isSynchronousCheck;
     }
 
     public abstract void onCheck(final CheckHandler handler);

@@ -12,9 +12,7 @@ import space.commandf1.amlegit.check.defaults.Check;
 import space.commandf1.amlegit.check.defaults.CheckHandler;
 import space.commandf1.amlegit.check.defaults.ReceivedPacketOnly;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
-import space.commandf1.amlegit.config.check.SynchronousCheck;
 
-@SynchronousCheck
 public class BadPacketsA extends Check {
 
     @CheckConfigHandler(name = "max-buffer")

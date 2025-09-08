@@ -1,13 +1,14 @@
 package space.commandf1.amlegit.util;
 
+import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class BlockUtil {
+    private static final double BLOCK_EDGE_OFFSET = 0.331D;
+
     public static Block getBlockAsync(final Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getWorld().getBlockAt(location);
@@ -17,35 +18,16 @@ public class BlockUtil {
     }
 
     public static Block getExactStandingBlock(Player player) {
-        Location playerLoc = player.getEyeLocation();
-        World world = player.getWorld();
+        val location = player.getLocation().clone().subtract(0, 1, 0);
+        var target = location.getBlock();
 
-        Vector direction = playerLoc.getDirection();
-        direction.setY(-0.1);
-
-        double checkDistance = 2.0;
-        double stepSize = 0.2;
-
-        Location checkLoc = playerLoc.clone();
-        Block lastNonAirBlock = null;
-
-        for (double d = 0; d <= checkDistance; d += stepSize) {
-            checkLoc.add(direction.getX() * stepSize, direction.getY() * stepSize, direction.getZ() * stepSize);
-            Block block = world.getBlockAt(checkLoc);
-
-            if (block.getType() != Material.AIR) {
-                if (!isPassable(block)) {
-                    return block;
-                }
-                lastNonAirBlock = block;
-            }
-        }
-
-        if (lastNonAirBlock != null) {
-            return lastNonAirBlock;
+        if (!isPassable(target)) {
+            return target;
         } else {
-            return world.getBlockAt(playerLoc.getBlockX(), playerLoc.getBlockY() - 1, playerLoc.getBlockZ());
+            // location.getBlockX()
         }
+
+        return target;
     }
 
     public static boolean isPassable(final Block block) {
@@ -62,7 +44,8 @@ public class BlockUtil {
                 || Material.TORCH == material
                 || Material.LONG_GRASS == material
                 || Material.WEB == material
-                || Material.PORTAL == material;
+                || Material.PORTAL == material
+                || Material.AIR == material;
     }
 
     public static boolean isLiquid(final Material material) {

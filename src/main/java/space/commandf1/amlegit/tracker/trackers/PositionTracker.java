@@ -71,9 +71,7 @@ public class PositionTracker extends Tracker {
         this.lastLastOnGround = this.lastOnGround;
         this.lastOnGround = this.onGround;
         this.onGround = packet.isOnGround();
-        org.bukkit.Location clone = player.getLocation().clone();
-        clone.setY(clone.getY() - 1);
-        Block block = BlockUtil.getBlockAsync(clone);
+        Block block = BlockUtil.getExactStandingBlock(player);
         if (block != null) {
             this.serverOnGround = !BlockUtil.isPassable(block.getType()) && block.getType() != Material.AIR;
         }

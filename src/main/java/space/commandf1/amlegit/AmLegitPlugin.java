@@ -3,6 +3,7 @@ package space.commandf1.amlegit;
 import com.github.mardssss.commandlib.CommandLib;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.util.TimeStampMode;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -43,6 +44,11 @@ public class AmLegitPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         PacketEvents.getAPI().init();
+        PacketEvents.getAPI()
+                .getSettings()
+                .checkForUpdates(false)
+                .timeStampMode(TimeStampMode.MILLIS);
+
         CommandLib.initialize(this);
 
         this.checkManager = CheckManager.getManager(this);

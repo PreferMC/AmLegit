@@ -36,6 +36,10 @@ public abstract class AbstractCheckHandler {
         return trackers.stream().filter(trackerClass::isInstance).map(trackerClass::cast).findFirst();
     }
 
+    public TrackerDataProvider<?>[] getTrackerDataProviders() {
+        return trackers.toArray(TrackerDataProvider[]::new);
+    }
+
     private static final Map<PlayerData, Long> buffers = new ConcurrentHashMap<>(),
             vls = new ConcurrentHashMap<>();
 

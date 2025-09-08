@@ -8,12 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import space.commandf1.amlegit.check.defaults.*;
 import space.commandf1.amlegit.config.check.CheckConfigHandler;
+import space.commandf1.amlegit.config.check.DefaultDisableCheck;
 import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@DefaultDisableCheck
 public class KeepSprintA extends Check implements Setbackable {
     @CheckConfigHandler(name = "max-buffer")
     @AlertDescription(name = "MaxBuffer")
