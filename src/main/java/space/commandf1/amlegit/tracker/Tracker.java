@@ -8,6 +8,9 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import lombok.Getter;
 import space.commandf1.amlegit.data.PlayerData;
 
+/**
+ * @author commandf1
+ */
 public abstract class Tracker implements PacketListener {
 
     @Getter

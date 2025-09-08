@@ -5,10 +5,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author commandf1
+ */
 public class BlockUtil {
-    private static final double BLOCK_EDGE_OFFSET = 0.331D;
-
     public static Block getBlockAsync(final Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getWorld().getBlockAt(location);
@@ -17,7 +19,8 @@ public class BlockUtil {
         }
     }
 
-    public static Block getExactStandingBlock(Player player) {
+    // FIXME
+    public static Block getExactStandingBlock(@NotNull Player player) {
         val location = player.getLocation().clone().subtract(0, 1, 0);
         var target = location.getBlock();
 

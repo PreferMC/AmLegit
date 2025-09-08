@@ -5,6 +5,9 @@ import lombok.Getter;
 import space.commandf1.amlegit.tracker.TrackerDataProvider;
 import space.commandf1.amlegit.tracker.trackers.PositionTracker;
 
+/**
+ * @author commandf1
+ */
 public class PositionTrackerDataProvider extends TrackerDataProvider<PositionTracker> {
     @Getter
     private final boolean onGround, serverOnGround, lastOnGround, lastLastOnGround, horizontalCollision;

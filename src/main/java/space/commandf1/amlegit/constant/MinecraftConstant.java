@@ -9,4 +9,9 @@ public class MinecraftConstant {
      * 值为 1/64，表示每个方块可以被细分为64个单位
      */
     public static final double BLOCK_STEP = 1.0D / 64.0D;
+
+    /**
+     * 方块边缘偏移量，用于精确计算玩家站立位置
+     */
+    public static final double BLOCK_EDGE_OFFSET = 0.331D;
 }

@@ -9,6 +9,9 @@ import space.commandf1.amlegit.tracker.Tracker;
 import space.commandf1.amlegit.tracker.providers.NetworkTrackerDataProvider;
 import space.commandf1.amlegit.util.PlayerUtil;
 
+/**
+ * @author commandf1
+ */
 public class NetworkTracker extends Tracker implements Runnable {
 
     @Getter

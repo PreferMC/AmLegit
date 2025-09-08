@@ -16,6 +16,9 @@ import space.commandf1.amlegit.tracker.Tracker;
 import space.commandf1.amlegit.tracker.providers.PositionTrackerDataProvider;
 import space.commandf1.amlegit.util.BlockUtil;
 
+/**
+ * @author commandf1
+ */
 public class PositionTracker extends Tracker {
 
     @Getter
