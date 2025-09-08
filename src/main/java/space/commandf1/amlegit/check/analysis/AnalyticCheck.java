@@ -11,10 +11,7 @@ import space.commandf1.amlegit.data.PlayerData;
 import space.commandf1.amlegit.tracker.TrackerDataProvider;
 import space.commandf1.amlegit.tracker.providers.NetworkTrackerDataProvider;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -54,8 +51,11 @@ public abstract class AnalyticCheck extends Check {
         this.packetsNumbersToHandle = packetsNumbersToHandle;
     }
 
-    private final NavigableMap<PlayerData, NavigableMap<Long, Set<TrackerDataProvider<?>>>> serverTrackers = new ConcurrentSkipListMap<>();
-    private final NavigableMap<PlayerData, NavigableMap<Long, CheckHandler>> clientPackets = new ConcurrentSkipListMap<>();
+    private static final Comparator<PlayerData> PLAYER_DATA_COMPARATOR =
+            Comparator.comparing(playerData -> playerData.getPlayer().getUniqueId());
+
+    private final NavigableMap<PlayerData, NavigableMap<Long, Set<TrackerDataProvider<?>>>> serverTrackers = new ConcurrentSkipListMap<>(PLAYER_DATA_COMPARATOR);
+    private final NavigableMap<PlayerData, NavigableMap<Long, CheckHandler>> clientPackets = new ConcurrentSkipListMap<>(PLAYER_DATA_COMPARATOR);
 
     @Override
     public final void onCheck(CheckHandler handler) {
